@@ -12,6 +12,33 @@ First, install [Node.js](http://nodejs.org), then:
 
 ...and the executable will be installed globally as `hue`
 
+Usage
+-----
+
+    Usage: hue [-H host] [--json] [command]
+
+    control phillips hue over the command line
+
+    examples
+      hue config          # view the hue config
+      hue lights          # get a list of lights
+      hue lights 5        # get information about light 5
+      hue lights 5,6,7 on # turn lights 5 6 and 7 on
+      hue help            # this message
+      hue register        # register this app to hue, done automatically
+      hue search          # search for hue base stations
+
+    commands
+      config, lights, help, register, search
+
+    options
+      -h, --help     print this message and exit
+      -H, --host     the hostname or ip of the bastion to control
+      -i, --init     initialize the config file at /Users/dave/.hue.json
+      -j, --json     force output to be in json
+      -u, --updates  check for available updates
+      -v, --version  print the version number and exit
+
 Example
 -------
 
@@ -36,7 +63,7 @@ Next, let's try to list the lights on that base station
     $ hue -H 10.0.1.218 lights
     error: application not registered, run `hue register` first
 
-Oops, this app isn't registered yet, let's go ahead and do that
+This app isn't registered yet, let's go ahead and do that
 
     $ hue -H 10.0.1.218 register
     please go and press the link button on your base station
@@ -45,7 +72,7 @@ Oops, this app isn't registered yet, let's go ahead and do that
 ### listing lights
 
 All you had to do was press the button on your base station to register, cool
-right?  Let's re run the lights command
+right?  Let's re-run the lights command
 
     $ hue -H 10.0.1.218 lights
     1: Mike 1
@@ -103,14 +130,13 @@ Let's actually mess with the lights now.  Let's turn on the light in my closet.
     $ hue lights 3 on
     light 3 success
 
-You'll have to trust me on this, but the light in my closet just turned on.  What
-about both lights in the hallway?
+What about both lights in the hallway?
 
     $ hue lights 4,5 on
     light 4 success
     light 5 success
 
-And both of the lights in the hallway just turned on.  What if we try to turn on a non-existent light?
+What if we try to turn on a non-existent light?
 
     $ hue lights 99 on
     light 99 failed: resource, /lights/99/state, not available
@@ -155,7 +181,7 @@ lights are done concurrently.  This means we don't have to wait for light 1 to f
 before we instruct light 2 to change, nor wait for light 2 to finish before we instruct
 light 3 to change, and so on.
 
-Shorthand hex is also cool
+Shorthand hex is also supported
 
     $ hue lights 3,4 0f0
     light 3 success
@@ -189,33 +215,6 @@ An optional config file can be created at `~/.hue.json` that looks like...
 * `host`: the host to connect to (normally passed in as `-H`)
 * `colors`: a key-value pair of color aliases to their hex mapping, you can use these
 when changing the colors of a light
-
-Usage
------
-
-    Usage: hue [-H host] [--json] [command]
-
-    control phillips hue over the command line
-
-    examples
-      hue config          # view the hue config
-      hue lights          # get a list of lights
-      hue lights 5        # get information about light 5
-      hue lights 5,6,7 on # turn lights 5 6 and 7 on
-      hue help            # this message
-      hue register        # register this app to hue, done automatically
-      hue search          # search for hue base stations
-
-    commands
-      config, lights, help, register, search
-
-    options
-      -h, --help     print this message and exit
-      -H, --host     the hostname or ip of the bastion to control
-      -i, --init     initialize the config file at /Users/dave/.hue.json
-      -j, --json     force output to be in json
-      -u, --updates  check for available updates
-      -v, --version  print the version number and exit
 
 Credits
 -------
