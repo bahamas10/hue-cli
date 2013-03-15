@@ -163,6 +163,33 @@ Shorthand hex is also cool
 
 Now lights 3 and 4 are green
 
+Last but not least, any CSS name is supported for colors
+
+    $ hue lights 1 yellow
+    light 1 success
+
+Light 1 is now yellow. The full list of colors is available here
+http://xahlee.info/js/css_color_names.html
+
+Config
+------
+
+An optional config file can be created at `~/.hue.json` that looks like...
+
+``` json
+{
+  "host": "1.2.3.4",
+  "colors": {
+    "myred": "fe0000",
+    "myblue": "0000fe"
+  }
+}
+```
+
+* `host`: the host to connect to (normally passed in as `-H`)
+* `colors`: a key-value pair of color aliases to their hex mapping, you can use these
+when changing the colors of a light
+
 Usage
 -----
 
@@ -195,6 +222,7 @@ Credits
 
 * [Phillips hue](http://meethue.com): I assume you know what this is by now
 * [hue.js](https://github.com/thatguydan/hue.js): Node.js hue client
+* [css-color-names](https://github.com/bahamas10/css-color-names): color aliases provided by this module
 
 License
 -------

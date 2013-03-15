@@ -10,6 +10,7 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util');
 
+var csscolors = require('css-color-names');
 var getopt = require('posix-getopt');
 var Hue = require('hue.js');
 
@@ -22,6 +23,13 @@ try {
   config = require(configfile);
 } catch (e) {
   config = {};
+}
+
+// load in config colors if present
+if (config.colors) {
+  Object.keys(config.colors).forEach(function(name) {
+    csscolors[name] = config.colors[name];
+  });
 }
 
 /**
@@ -38,6 +46,9 @@ function usage() {
     '  hue lights          # get a list of lights',
     '  hue lights 5        # get information about light 5',
     '  hue lights 5,6,7 on # turn lights 5 6 and 7 on',
+    '  hue lights on       # turn all lights on',
+    '  hue lights 1 ff0000 # turn light 1 red',
+    '  hue lights 1 red    # same as above',
     '  hue help            # this message',
     '  hue register        # register this app to hue, done automatically',
     '  hue search          # search for hue base stations',
@@ -133,8 +144,8 @@ switch (args[0]) {
       switch (args[2]) {
         case 'off': l.forEach(function(id) { client.off(id, callback(id)); }); break;
         case 'on': l.forEach(function(id) { client.on(id, callback(id)); }); break;
-        default: // assume hex values
-          var hex = args[2];
+        default: // hex or colors
+          var hex = csscolors[args[2]] || args[2];
           var rgb = hex2rgb(hex);
 
           l.forEach(function(id) {
@@ -208,6 +219,7 @@ function getlights(client, cb) {
 
 // convert a 3 or 6 character hex string to rgb
 function hex2rgb(hex) {
+  if (hex[0] === '#') hex = hex.slice(1);
   var r, g, b;
 
   if (hex.length === 3) {
