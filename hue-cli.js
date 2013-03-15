@@ -113,7 +113,7 @@ switch (args[0]) {
   case 'help': // print the help message
     console.log(usage());
     break;
-  case 'lights': // mess with the lights
+  case 'lights': case 'light': // mess with the lights
     client = getclient();
     getlights(client, function(lights) {
       // if there are no lights specified, return the list of lights
