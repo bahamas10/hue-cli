@@ -1,0 +1,31 @@
+{
+  "name": "hue-cli",
+  "description": "A command line interface to phillips hue",
+  "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
+  "version": "0.0.0",
+  "repository": {
+    "url": "https://github.com/bahamas10/hue-cli",
+    "type": "git"
+  },
+  "scripts": {
+    "test": "for f in examples/*.js; do echo \"$f\"; node \"$f\" || exit 1; echo; done; echo 'Passed'"
+  },
+  "bin": {
+    "hue": "./hue-cli.js"
+  },
+  "dependencies": {
+    "posix-getopt": "~1.0.0",
+    "hue.js": "~0.1.7",
+    "latest": "~0.1.0"
+  },
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "keywords": [
+    "hue",
+    "phillips",
+    "automation"
+  ]
+}
