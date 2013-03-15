@@ -168,7 +168,7 @@ switch (args[0]) {
     });
     break;
   default: // uh oh
-    console.error('unknown command');
+    console.error('unknown command: run `hue help` for more information');
     process.exit(1);
 }
 
