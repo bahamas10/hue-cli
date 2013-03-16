@@ -24,6 +24,9 @@ Usage
       hue lights          # get a list of lights
       hue lights 5        # get information about light 5
       hue lights 5,6,7 on # turn lights 5 6 and 7 on
+      hue lights on       # turn all lights on
+      hue lights 1 ff0000 # turn light 1 red
+      hue lights 1 red    # same as above
       hue help            # this message
       hue register        # register this app to hue, done automatically
       hue search          # search for hue base stations
