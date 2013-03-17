@@ -78,14 +78,22 @@ All you had to do was press the button on your base station to register, cool
 right?  Let's re-run the lights command
 
     $ hue -H 10.0.1.218 lights
-    1: Mike 1
-    2: Mike 2
-    3: Dave closet
-    4: Hallway 2
-    5: Hallway 1
-    6: Front hallway
-    7: Dave Ledge Left
-    8: Dave Ledge Right
+       1 Mike 1
+       2 Mike 2
+       3 Dave closet
+       4 Hallway 2
+       5 Hallway 1
+       6 Front hallway
+       7 Dave Ledge Left
+       8 Dave Ledge Right
+       9 Dave's Piano
+      10 Dave's Lamp
+      11 Balcony Mike
+      12 Balcony Dave
+      13 Balcony Living Room
+      14 Mike 3
+      15 Living room 3
+      16 Living room 1
 
 Again, `-j` if you'd like json output.
 
@@ -106,6 +114,11 @@ with every command.
 From here, we can get information about a single light like:
 
     $ hue lights 1
+       1 on    Mike 1
+
+And `-j` for json
+
+    $ hue -j lights 1
     {
       "state": {
         "on": true,

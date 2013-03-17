@@ -13,6 +13,8 @@ var util = require('util');
 var csscolors = require('css-color-names');
 var getopt = require('posix-getopt');
 var Hue = require('hue.js');
+var sprintf = require('extsprintf').sprintf;
+function printf() { console.log(sprintf.apply(this, arguments)); }
 
 var package = require('./package.json');
 
@@ -22,7 +24,7 @@ var config;
 try {
   config = require(configfile);
 } catch (e) {
-  config = {};
+  config = {host: null};
 }
 
 // load in config colors if present
@@ -113,15 +115,16 @@ switch (args[0]) {
   case 'help': // print the help message
     console.log(usage());
     break;
-  case 'lights': case 'light': // mess with the lights
+  case 'lights': case 'light': case 'list':// mess with the lights
     client = getclient();
     getlights(client, function(lights) {
       // if there are no lights specified, return the list of lights
       var keys = Object.keys(lights);
       if (!args[1]) {
         if (json) return console.log(JSON.stringify(lights, null, 2));
+        //printf('%4s %s', 'ID', 'NAME');
         keys.forEach(function(key) {
-          console.log('%s: %s', key, lights[key].name);
+          printf('%4d %s', key, lights[key].name);
         });
         return;
       }
@@ -135,8 +138,18 @@ switch (args[0]) {
       }
       // if there is no action specified, return info about the first light given
       if (!args[2]) {
-        client.light(l[0], function(err, data) {
-          console.log(JSON.stringify(err || data, null, 2));
+        //if (!json) printf('%4s %-5s %s', 'ID', 'STATE', 'NAME');
+        l.forEach(function(id) {
+          client.light(id, function(err, data) {
+            if (data) data.id = id;
+            if (json) return console.log(JSON.stringify(err || data, null, 2));
+            if (err) return printf('%4d %-5s %s (type %d)', id, 'error', err.description, err.type);
+
+            printf('%4d %-5s %s',
+                id,
+                data.state.on ? 'on' : 'off',
+                data.name);
+          });
         });
         return;
       }
@@ -167,7 +180,10 @@ switch (args[0]) {
     client = getclient();
     console.log('please go and press the link button on your base station');
     client.register(function(err) {
-      if (err) return cb(err);
+      if (err) {
+        console.error('failed to pair to Hue Base Station %s', huehost);
+        throw err;
+      }
       console.log('Hue Base Station paired!')
     });
     break;
