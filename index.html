@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Hue-cli by bahamas10</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Hue-cli</h1>
+          <h2>A command line interface to phillips hue</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/bahamas10/hue-cli/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/bahamas10/hue-cli/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/bahamas10/hue-cli" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>hue(1)</h1>
+
+<p>A command line interface to <a href="http://meethue.com">phillips hue</a></p>
+
+<h2>Installation</h2>
+
+<p>First, install <a href="http://nodejs.org">Node.js</a>, then:</p>
+
+<pre><code>npm install -g hue-cli
+</code></pre>
+
+<p>...and the executable will be installed globally as <code>hue</code></p>
+
+<h2>Usage</h2>
+
+<pre><code>Usage: hue [-H host] [--json] [command]
+
+control phillips hue over the command line
+
+examples
+  hue config          # view the hue config
+  hue lights          # get a list of lights
+  hue lights 5        # get information about light 5
+  hue lights 5,6,7 on # turn lights 5 6 and 7 on
+  hue lights on       # turn all lights on
+  hue lights 1 ff0000 # turn light 1 red
+  hue lights 1 red    # same as above
+  hue help            # this message
+  hue register        # register this app to hue, done automatically
+  hue search          # search for hue base stations
+
+commands
+  config, lights, help, register, search
+
+options
+  -h, --help     print this message and exit
+  -H, --host     the hostname or ip of the bastion to control
+  -i, --init     initialize the config file at /Users/dave/.hue.json
+  -j, --json     force output to be in json
+  -u, --updates  check for available updates
+  -v, --version  print the version number and exit
+</code></pre>
+
+<h2>Example</h2>
+
+<h3>starting off</h3>
+
+<p>First, let's search for nearby base stations</p>
+
+<pre><code>$ hue search
+1 stations found
+
+1: 10.0.1.218
+</code></pre>
+
+<p>Pass in <code>-j</code> for json if you'd like</p>
+
+<pre><code>$ hue -j search
+[
+  "10.0.1.218"
+]
+</code></pre>
+
+<p>Next, let's try to list the lights on that base station</p>
+
+<pre><code>$ hue -H 10.0.1.218 lights
+error: application not registered, run `hue register` first
+</code></pre>
+
+<p>This app isn't registered yet, let's go ahead and do that</p>
+
+<pre><code>$ hue -H 10.0.1.218 register
+please go and press the link button on your base station
+Hue Base Station paired!
+</code></pre>
+
+<h3>listing lights</h3>
+
+<p>All you had to do was press the button on your base station to register, cool
+right?  Let's re-run the lights command</p>
+
+<pre><code>$ hue -H 10.0.1.218 lights
+   1 Mike 1
+   2 Mike 2
+   3 Dave closet
+   4 Hallway 2
+   5 Hallway 1
+   6 Front hallway
+   7 Dave Ledge Left
+   8 Dave Ledge Right
+   9 Dave's Piano
+  10 Dave's Lamp
+  11 Balcony Mike
+  12 Balcony Dave
+  13 Balcony Living Room
+  14 Mike 3
+  15 Living room 3
+  16 Living room 1
+</code></pre>
+
+<p>Again, <code>-j</code> if you'd like json output.</p>
+
+<p>Running with the command <code>lights</code> will give us a list of all the lights
+connected to the base station.</p>
+
+<p>Before we continue, let's create a configuration file.  In the file we can
+set the default host to connect to, so we don't have to keep supplying the
+<code>-H</code> argument.  Run:</p>
+
+<pre><code>$ hue --init
+config file written to `~/.hue.json`
+</code></pre>
+
+<p>Now, modify that file and replace <code>null</code> with <code>10.0.1.218</code>, or whatever
+your IP or hostname is. Now we'll no longer have to supply the <code>-H</code> argument
+with every command.</p>
+
+<p>From here, we can get information about a single light like:</p>
+
+<pre><code>$ hue lights 1
+   1 on    Mike 1
+</code></pre>
+
+<p>And <code>-j</code> for json</p>
+
+<pre><code>$ hue -j lights 1
+{
+  "state": {
+    "on": true,
+    "bri": 141,
+    "hue": 13122,
+    "sat": 211,
+    "xy": [
+      0.5119,
+      0.4147
+    ],
+    "ct": 467,
+    "alert": "none",
+    "effect": "none",
+    "colormode": "ct",
+    "reachable": true
+  },
+  "type": "Extended color light",
+  ...
+}
+</code></pre>
+
+<h3>controlling the lights</h3>
+
+<p>Let's actually mess with the lights now.  Let's turn on the light in my closet.</p>
+
+<pre><code>$ hue lights 3 on
+light 3 success
+</code></pre>
+
+<p>What about both lights in the hallway?</p>
+
+<pre><code>$ hue lights 4,5 on
+light 4 success
+light 5 success
+</code></pre>
+
+<p>What if we try to turn on a non-existent light?</p>
+
+<pre><code>$ hue lights 99 on
+light 99 failed: resource, /lights/99/state, not available
+</code></pre>
+
+<p>Cool, errors handled properly.  Let's see some more examples</p>
+
+<pre><code>$ hue lights off
+light 1 success
+light 2 success
+light 3 success
+...
+</code></pre>
+
+<p>This is shorthand for</p>
+
+<pre><code>$ hue lights all off
+</code></pre>
+
+<p>Where <code>all</code> is a recognized keyword for all lights in the system.  You can also:</p>
+
+<pre><code>$ hue lights off
+</code></pre>
+
+<p>To quickly turn off all lights on the system</p>
+
+<h3>controlling colors</h3>
+
+<blockquote>
+<p>We can turn the lights on and off, that's great... what about colors?</p>
+</blockquote>
+
+<p>You want colors? how about hex</p>
+
+<pre><code>$ hue lights 4 ffffff
+light 4 success
+</code></pre>
+
+<p>We just set the light in the hallway to pure white, hex <code>ffffff</code>.  Let's go crazy
+and turn all of the lights in the house red (this is where we need the <code>all</code> keyword)</p>
+
+<pre><code>$ hue lights all ff0000
+light 1 success
+light 2 success
+...
+</code></pre>
+
+<p>It's worth noting here that, because this tool is written in Node, all requests to the
+lights are done concurrently.  This means we don't have to wait for light 1 to finish
+before we instruct light 2 to change, nor wait for light 2 to finish before we instruct
+light 3 to change, and so on.</p>
+
+<p>Shorthand hex is also supported</p>
+
+<pre><code>$ hue lights 3,4 0f0
+light 3 success
+light 4 success
+</code></pre>
+
+<p>Now lights 3 and 4 are green</p>
+
+<p>Last but not least, any CSS name is supported for colors</p>
+
+<pre><code>$ hue lights 1 yellow
+light 1 success
+</code></pre>
+
+<p>Light 1 is now yellow. The full list of colors is available here
+<a href="http://xahlee.info/js/css_color_names.html">http://xahlee.info/js/css_color_names.html</a></p>
+
+<h2>Config</h2>
+
+<p>An optional config file can be created at <code>~/.hue.json</code> that looks like...</p>
+
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">"host"</span><span class="p">:</span> <span class="s2">"1.2.3.4"</span><span class="p">,</span>
+  <span class="nt">"colors"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"myred"</span><span class="p">:</span> <span class="s2">"fe0000"</span><span class="p">,</span>
+    <span class="nt">"myblue"</span><span class="p">:</span> <span class="s2">"0000fe"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<ul>
+<li>
+<code>host</code>: the host to connect to (normally passed in as <code>-H</code>)</li>
+<li>
+<code>colors</code>: a key-value pair of color aliases to their hex mapping, you can use these
+when changing the colors of a light</li>
+</ul><h2>Credits</h2>
+
+<ul>
+<li>
+<a href="http://meethue.com">Phillips hue</a>: I assume you know what this is by now</li>
+<li>
+<a href="https://github.com/thatguydan/hue.js">hue.js</a>: Node.js hue client</li>
+<li>
+<a href="https://github.com/bahamas10/css-color-names">css-color-names</a>: color aliases provided by this module</li>
+</ul><h2>License</h2>
+
+<p>MIT</p>
+        </section>
+
+        <footer>
+          Hue-cli is maintained by <a href="https://github.com/bahamas10">bahamas10</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
