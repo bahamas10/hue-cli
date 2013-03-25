@@ -37,7 +37,7 @@ Usage
     options
       -h, --help     print this message and exit
       -H, --host     the hostname or ip of the bastion to control
-      -i, --init     initialize the config file at /Users/dave/.hue.json
+      -i, --init     initialize the config file at ~/.hue.json
       -j, --json     force output to be in json
       -u, --updates  check for available updates
       -v, --version  print the version number and exit
