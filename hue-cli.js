@@ -136,7 +136,7 @@ switch (args[0]) {
         case 'on': l = keys; args[2] = 'on'; break;
         case 'off': l = keys; args[2] = 'off'; break;
       }
-      // if there is no action specified, return info about the first light given
+      // if there is no action specified, return info for all lights
       if (!args[2]) {
         //if (!json) printf('%4s %-5s %s', 'ID', 'STATE', 'NAME');
         l.forEach(function(id) {
@@ -157,7 +157,7 @@ switch (args[0]) {
       switch (args[2]) {
         case 'off': l.forEach(function(id) { client.off(id, callback(id)); }); break;
         case 'on': l.forEach(function(id) { client.on(id, callback(id)); }); break;
-        default: // hex or colors
+        default: // hex, colors, or brightness
           var hex = csscolors[args[2]] || args[2];
           var rgb = hex2rgb(hex);
 
