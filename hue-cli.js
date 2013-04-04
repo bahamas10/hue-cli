@@ -205,7 +205,7 @@ function getclient() {
     console.error([
       'error: host not set',
       '',
-      'search for hosts with: hue search',
+      'search for hosts with `hue search`',
       'then run with `-H <host>` or create a config file with `--init`',
     ].join('\n'));
     process.exit(1);
