@@ -20,16 +20,19 @@ Usage
     control phillips hue over the command line
 
     examples
-      hue config          # view the hue config
-      hue lights          # get a list of lights
-      hue lights 5        # get information about light 5
-      hue lights 5,6,7 on # turn lights 5 6 and 7 on
-      hue lights on       # turn all lights on
-      hue lights 1 ff0000 # turn light 1 red
-      hue lights 1 red    # same as above
-      hue help            # this message
-      hue register        # register this app to hue, done automatically
-      hue search          # search for hue base stations
+      hue config                  # view the hue config
+      hue lights                  # get a list of lights
+      hue lights 5                # get information about light 5
+      hue lights 5,6,7 on         # turn lights 5 6 and 7 on
+      hue lights on               # turn all lights on
+      hue lights 1 ff0000         # turn light 1 red
+      hue lights 1 red            # same as above
+      hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5
+      hue lights 4,5 clear        # clear any effects on lights 4 and 5
+      hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin
+      hue help                    # this message
+      hue register                # register this app to hue
+      hue search                  # search for hue base stations
 
     commands
       config, lights, help, register, search
@@ -179,7 +182,7 @@ To quickly turn off all lights on the system
 
 > We can turn the lights on and off, that's great... what about colors?
 
-You want colors? how about hex
+How about hex
 
     $ hue lights 4 ffffff
     light 4 success
@@ -212,6 +215,32 @@ Last but not least, any CSS name is supported for colors
 
 Light 1 is now yellow. The full list of colors is available here
 http://xahlee.info/js/css_color_names.html
+
+### effects
+
+You can enable the colorloop effect on lamps by running
+
+    $ hue lights 4,5,6 colorloop
+    light 4 success
+    light 5 success
+    light 6 success
+
+and clear all effects with
+
+    $ hue lights 4,5,6 clear
+    light 4 success
+    light 5 success
+    light 6 success
+
+### debugging
+
+Last but not least, you can pass the state as JSON over stdin.  The possible
+values are found at [http://developers.meethue.com/1_lightsapi.html](http://developers.meethue.com/1_lightsapi.html)
+in section 1.6.
+
+    $ echo '{"bri": 240, "hue": 25500}' | hue lights 7 state
+
+The `state` keyword tells `hue` to read from stdin
 
 Config
 ------

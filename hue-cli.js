@@ -44,16 +44,19 @@ function usage() {
     'control phillips hue over the command line',
     '',
     'examples',
-    '  hue config          # view the hue config',
-    '  hue lights          # get a list of lights',
-    '  hue lights 5        # get information about light 5',
-    '  hue lights 5,6,7 on # turn lights 5 6 and 7 on',
-    '  hue lights on       # turn all lights on',
-    '  hue lights 1 ff0000 # turn light 1 red',
-    '  hue lights 1 red    # same as above',
-    '  hue help            # this message',
-    '  hue register        # register this app to hue, done automatically',
-    '  hue search          # search for hue base stations',
+    '  hue config                  # view the hue config',
+    '  hue lights                  # get a list of lights',
+    '  hue lights 5                # get information about light 5',
+    '  hue lights 5,6,7 on         # turn lights 5 6 and 7 on',
+    '  hue lights on               # turn all lights on',
+    '  hue lights 1 ff0000         # turn light 1 red',
+    '  hue lights 1 red            # same as above',
+    '  hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5',
+    '  hue lights 4,5 clear        # clear any effects on lights 4 and 5',
+    '  hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin',
+    '  hue help                    # this message',
+    '  hue register                # register this app to hue',
+    '  hue search                  # search for hue base stations',
     '',
     'commands',
     '  config, lights, help, register, search',
@@ -157,6 +160,14 @@ switch (args[0]) {
       switch (args[2]) {
         case 'off': l.forEach(function(id) { client.off(id, callback(id)); }); break;
         case 'on': l.forEach(function(id) { client.on(id, callback(id)); }); break;
+        case 'colorloop': l.forEach(function(id) { client.state(id, {effect: 'colorloop'}, callback(id)); }); break;
+        case 'clear': l.forEach(function(id) { client.state(id, {effect: 'none'}, callback(id)); }); break;
+        case 'state': // read state from stdin
+          var data = JSON.parse(fs.readFileSync('/dev/stdin', 'utf-8'));
+          l.forEach(function(id) {
+            client.state(id, data, callback(id));
+          });
+          break;
         default: // hex, colors, or brightness
           var hex = csscolors[args[2]] || args[2];
           var rgb = hex2rgb(hex);
