@@ -263,6 +263,35 @@ light 1 success
 <p>Light 1 is now yellow. The full list of colors is available here
 <a href="http://xahlee.info/js/css_color_names.html">http://xahlee.info/js/css_color_names.html</a></p>
 
+<h3>effects</h3>
+
+<p>You can enable the colorloop effect on lamps by running</p>
+
+<pre><code>$ hue lights 4,5,6 colorloop
+light 4 success
+light 5 success
+light 6 success
+</code></pre>
+
+<p>and clear all effects with</p>
+
+<pre><code>$ hue lights 4,5,6 clear
+light 4 success
+light 5 success
+light 6 success
+</code></pre>
+
+<h3>debugging</h3>
+
+<p>Last but not least, you can pass the state as JSON over stdin.  The possible
+values are found at <a href="http://developers.meethue.com/1_lightsapi.html">http://developers.meethue.com/1_lightsapi.html</a>
+in section 1.6.</p>
+
+<pre><code>$ echo '{"bri": 240, "hue": 25500}' | hue lights 7 state
+</code></pre>
+
+<p>The <code>state</code> keyword tells <code>hue</code> to read from stdin</p>
+
 <h2>Config</h2>
 
 <p>An optional config file can be created at <code>~/.hue.json</code> that looks like...</p>
