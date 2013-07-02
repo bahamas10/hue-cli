@@ -140,8 +140,10 @@ switch (args[0]) {
         case 'all': l = keys; break;
         case 'on': l = keys; args[2] = 'on'; break;
         case 'off': l = keys; args[2] = 'off'; break;
-        case 'reset': l = keys; args[2] = 'reset'; break;
         case 'colorloop': l = keys; args[2] = 'colorloop'; break;
+        case 'clear': l = keys; args[2] = 'clear'; break;
+        case 'reset': l = keys; args[2] = 'reset'; break;
+        case 'state': l = keys; args[2] = 'state'; break;
       }
       // if there is no action specified, return info for all lights
       if (!args[2]) {
@@ -166,7 +168,7 @@ switch (args[0]) {
         case 'on': l.forEach(function(id) { client.on(id, callback(id)); }); break;
         case 'colorloop': l.forEach(function(id) { client.state(id, {effect: 'colorloop'}, callback(id)); }); break;
         case 'clear': l.forEach(function(id) { client.state(id, {effect: 'none'}, callback(id)); }); break;
-        case 'reset': l.forEach(function(id) { client.state(id, {'on': true, 'bri': 250, 'sat': 120, 'hue': 14000}, callback(id)); }); break;
+        case 'reset': l.forEach(function(id) { client.state(id, {on: true, bri: 250, sat: 120, hue: 14000, effect: 'none'}, callback(id)); }); break;
         case 'state': // read state from stdin
           var data = JSON.parse(fs.readFileSync('/dev/stdin', 'utf-8'));
           l.forEach(function(id) {
