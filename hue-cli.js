@@ -54,6 +54,8 @@ function usage() {
     '  hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5',
     '  hue lights 4,5 clear        # clear any effects on lights 4 and 5',
     '  hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin',
+    '  hue lights reset            # reset all lamps to default (on, as if the bulb was just flipped on)',
+    '  hue lights 1,2 reset        # reset just bulbs 1 and 2',
     '  hue help                    # this message',
     '  hue register                # register this app to hue',
     '  hue search                  # search for hue base stations',
@@ -138,6 +140,8 @@ switch (args[0]) {
         case 'all': l = keys; break;
         case 'on': l = keys; args[2] = 'on'; break;
         case 'off': l = keys; args[2] = 'off'; break;
+        case 'reset': l = keys; args[2] = 'reset'; break;
+        case 'colorloop': l = keys; args[2] = 'colorloop'; break;
       }
       // if there is no action specified, return info for all lights
       if (!args[2]) {
@@ -162,6 +166,7 @@ switch (args[0]) {
         case 'on': l.forEach(function(id) { client.on(id, callback(id)); }); break;
         case 'colorloop': l.forEach(function(id) { client.state(id, {effect: 'colorloop'}, callback(id)); }); break;
         case 'clear': l.forEach(function(id) { client.state(id, {effect: 'none'}, callback(id)); }); break;
+        case 'reset': l.forEach(function(id) { client.state(id, {'on': true, 'bri': 250, 'sat': 120, 'hue': 14000}, callback(id)); }); break;
         case 'state': // read state from stdin
           var data = JSON.parse(fs.readFileSync('/dev/stdin', 'utf-8'));
           l.forEach(function(id) {
