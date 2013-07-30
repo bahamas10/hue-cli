@@ -223,6 +223,8 @@ Last but not least, any CSS name is supported for colors
 Light 1 is now yellow. The full list of colors is available here
 http://xahlee.info/js/css_color_names.html
 
+### brightness
+
 Brightness can also be changed using the `=`, `+` and `-` operators
 
     $ hue lights 1 +20
