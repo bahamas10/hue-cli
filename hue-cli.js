@@ -51,6 +51,9 @@ function usage() {
     '  hue lights on               # turn all lights on',
     '  hue lights 1 ff0000         # turn light 1 red',
     '  hue lights 1 red            # same as above',
+    '  hue lights 1 +10            # increase the brightness by 10',
+    '  hue lights 1 -10            # decrease the brightness by 10',
+    '  hue lights 1 =100           # set the brightness to 100',
     '  hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5',
     '  hue lights 4,5 clear        # clear any effects on lights 4 and 5',
     '  hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin',
@@ -154,9 +157,10 @@ switch (args[0]) {
             if (json) return console.log(JSON.stringify(err || data, null, 2));
             if (err) return printf('%4d %-5s %s (type %d)', id, 'error', err.description, err.type);
 
-            printf('%4d %-5s %s',
+            printf('%4d %-5s %-7d %s',
                 id,
                 data.state.on ? 'on' : 'off',
+                data.state.bri,
                 data.name);
           });
         });
@@ -176,7 +180,43 @@ switch (args[0]) {
           });
           break;
         default: // hex, colors, or brightness
-          var hex = csscolors[args[2]] || args[2];
+          var s = args[2];
+
+          if (s[0] === '-' || s[0] === '+' || s[0] === '=') {
+            var num = +s.slice(1);
+            l.forEach(function(id) {
+              client.light(id, function(err, data) {
+                if (err) {
+                  if (json)
+                    return console.log(JSON.stringify(err || data, null, 2));
+                  return printf('%4d %-5s %s (type %d)', id, 'error', err.description, err.type);
+                }
+                var bri = data.state.bri;
+                var oldbri = bri;
+                switch (s[0]) {
+                  case '=':
+                    bri = num;
+                    break;
+                  case '+':
+                    bri += num;
+                    break;
+                  case '-':
+                    bri -= num;
+                    break;
+                }
+                bri = Math.min(255, Math.max(0, bri));
+                client.state(id, {bri: bri}, function(err, data) {
+                  if (json) return console.log(JSON.stringify(err || data, null, 2));
+                  if (err) return printf('%4d %-5s %s (type %d)', id, 'error', err.description, err.type);
+                  console.log('light %d brightness %d -> %s', id, oldbri, bri);
+
+                });
+              });
+            });
+            return;
+          }
+
+          var hex = csscolors[s] || s;
           var rgb = hex2rgb(hex);
 
           l.forEach(function(id) {

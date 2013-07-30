@@ -27,6 +27,9 @@ Usage
       hue lights on               # turn all lights on
       hue lights 1 ff0000         # turn light 1 red
       hue lights 1 red            # same as above
+      hue lights 1 +10            # increase the brightness by 10
+      hue lights 1 -10            # decrease the brightness by 10
+      hue lights 1 =100           # set the brightness to 100
       hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5
       hue lights 4,5 clear        # clear any effects on lights 4 and 5
       hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin
@@ -119,7 +122,9 @@ with every command.
 From here, we can get information about a single light like:
 
     $ hue lights 1
-       1 on    Mike 1
+       1 on    141    Mike 1
+
+141 in the above example is the brightness.
 
 And `-j` for json
 
@@ -217,6 +222,15 @@ Last but not least, any CSS name is supported for colors
 
 Light 1 is now yellow. The full list of colors is available here
 http://xahlee.info/js/css_color_names.html
+
+Brightness can also be changed using the `=`, `+` and `-` operators
+
+    $ hue lights 1 +20
+    light 1 brightness 200 -> 220
+    $ hue lights 1 -30
+    light 1 brightness 220 -> 190
+    $ hue lights 1 =150
+    light 1 brightness 150
 
 ### effects
 
