@@ -68,7 +68,7 @@ function usage() {
     '',
     'options',
     '  -h, --help     print this message and exit',
-    '  -H, --host     the hostname or ip of the bastion to control',
+    '  -H, --host     the hostname or ip of the bridge to control',
     '  -i, --init     initialize the config file at ' + configfile,
     '  -j, --json     force output to be in json',
     '  -u, --updates  check for available updates',
