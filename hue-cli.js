@@ -57,6 +57,7 @@ function usage() {
     '  hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5',
     '  hue lights 4,5 clear        # clear any effects on lights 4 and 5',
     '  hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin',
+    '  hue rename 1 light-name     # set light 1\'s name to the given string',
     '  hue lights reset            # reset all lamps to default (on, as if the bulb was just flipped on)',
     '  hue lights 1,2 reset        # reset just bulbs 1 and 2',
     '  hue help                    # this message',
@@ -250,6 +251,16 @@ switch (args[0]) {
       if (json) return console.log(JSON.stringify(stations, null, 2));
       console.log('%d stations found\n', stations.length);
       stations.forEach(function(name, i) { console.log('%d: %s', i+1, name); });
+    });
+    break;
+  case 'rename': // rename light
+    client = getclient();
+    client.rename(args[1], args[2], function(reply) {
+      if (reply) {
+        console.log('problem renaming light: ' + reply.description);
+      } else {
+        console.log('light %d renamed', args[1]);
+      }
     });
     break;
   default: // uh oh
