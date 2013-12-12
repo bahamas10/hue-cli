@@ -2,7 +2,7 @@
   "name": "hue-cli",
   "description": "A command line interface to phillips hue",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "repository": {
     "url": "https://github.com/bahamas10/hue-cli",
     "type": "git"
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "posix-getopt": "~1.0.0",
-    "hue.js": "~0.1.9",
+    "hue.js": "~0.2.13",
     "latest": "~0.1.1",
     "css-color-names": "0.0.0",
     "extsprintf": "~1.0.2"

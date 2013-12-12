@@ -33,6 +33,7 @@ Usage
       hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5
       hue lights 4,5 clear        # clear any effects on lights 4 and 5
       hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin
+      hue rename 1 light-name     # set light 1's name to the given string
       hue lights reset            # reset all lamps to default (on, as if the bulb was just flipped on)
       hue lights 1,2 reset        # reset just bulbs 1 and 2
       hue help                    # this message
