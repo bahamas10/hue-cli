@@ -116,7 +116,7 @@ set the default host to connect to, so we don't have to keep supplying the
     $ hue --init
     config file written to `~/.hue.json`
 
-Now, modify that file and replace `null` with `10.0.1.218`, or whatever
+Now, modify that file and replace `null` with `"10.0.1.218"`, or whatever
 your IP or hostname is. Now we'll no longer have to supply the `-H` argument
 with every command.
 
