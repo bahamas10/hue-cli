@@ -19,8 +19,8 @@ function printf() { console.log(sprintf.apply(this, arguments)); }
 var package = require('./package.json');
 
 var app = 'node-hue-cli';
-var homedir = process.env.HOME || process.env.USERPROFILE;
-var configfile = path.join(process.env.HOME, '.hue.json');
+var homedir = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+var configfile = path.join(homedir, '.hue.json');
 var config;
 try {
   config = JSON.parse(fs.readFileSync(configfile, 'utf-8'));
