@@ -19,10 +19,11 @@ function printf() { console.log(sprintf.apply(this, arguments)); }
 var package = require('./package.json');
 
 var app = 'node-hue-cli';
+var homedir = process.env.HOME || process.env.USERPROFILE;
 var configfile = path.join(process.env.HOME, '.hue.json');
 var config;
 try {
-  config = require(configfile);
+  config = JSON.parse(fs.readFileSync(configfile, 'utf-8'));
 } catch (e) {
   config = {host: null};
 }
@@ -72,6 +73,7 @@ function usage() {
     '  -H, --host     the hostname or ip of the bridge to control',
     '  -i, --init     initialize the config file at ' + configfile,
     '  -j, --json     force output to be in json',
+    '  -s, --save     save the config file at ' + configfile + ', same as --init',
     '  -u, --updates  check for available updates',
     '  -v, --version  print the version number and exit'
   ].join('\n');
@@ -83,6 +85,7 @@ var options = [
   'H:(host)',
   'i(init)',
   'j(json)',
+  's(save)',
   'u(updates)',
   'v(version)'
 ].join('');
@@ -90,14 +93,15 @@ var parser = new getopt.BasicParser(options, process.argv);
 
 var option;
 var json = false;
-var huehost = config.host;
 while ((option = parser.getopt()) !== undefined) {
   switch (option.option) {
     case 'h': console.log(usage()); process.exit(0);
-    case 'H': huehost = option.optarg; break;
-    case 'i':
-      fs.writeFileSync(configfile, JSON.stringify(config, null, 2));
+    case 'H': config.host = option.optarg; break;
+    case 'i': case 's':
+      var s = JSON.stringify(config, null, 2);
+      fs.writeFileSync(configfile, s + '\n');
       console.log('config file written to `%s`', configfile);
+      console.log(s);
       process.exit(0);
     case 'j': json = true; break;
     case 'u': // check for updates
@@ -240,7 +244,7 @@ switch (args[0]) {
     console.log('please go and press the link button on your base station');
     client.register(function(err) {
       if (err) {
-        console.error('failed to pair to Hue Base Station %s', huehost);
+        console.error('failed to pair to Hue Base Station %s', config.host);
         throw err;
       }
       console.log('Hue Base Station paired!')
@@ -270,7 +274,7 @@ switch (args[0]) {
 
 // wrapper around get client to error on failure
 function getclient() {
-  if (!huehost) {
+  if (!config.host) {
     console.error([
       'error: host not set',
       '',
@@ -282,7 +286,7 @@ function getclient() {
 
   // create the client
   var client = Hue.createClient({
-    stationIp: huehost,
+    stationIp: config.host,
     appName: app
   });
   return client;

@@ -48,6 +48,7 @@ Usage
       -H, --host     the hostname or ip of the bridge to control
       -i, --init     initialize the config file at ~/.hue.json
       -j, --json     force output to be in json
+      -s, --save     save the config file at ~/.hue.json, same as --init
       -u, --updates  check for available updates
       -v, --version  print the version number and exit
 
@@ -113,11 +114,13 @@ Before we continue, let's create a configuration file.  In the file we can
 set the default host to connect to, so we don't have to keep supplying the
 `-H` argument.  Run:
 
-    $ hue --init
+    $ hue --host 10.0.1.218 --save
     config file written to `~/.hue.json`
+    {
+      "host": "10.0.1.218"
+    }
 
-Now, modify that file and replace `null` with `"10.0.1.218"`, or whatever
-your IP or hostname is. Now we'll no longer have to supply the `-H` argument
+Now we'll no longer have to supply the `-H` argument
 with every command.
 
 From here, we can get information about a single light like:
