@@ -31,6 +31,7 @@ Usage
       hue lights 1 -10            # decrease the brightness by 10
       hue lights 1 =100           # set the brightness to 100
       hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5
+      hue lights 4,5 alert        # enable the blink effect on lights 4 and 5
       hue lights 4,5 clear        # clear any effects on lights 4 and 5
       hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin
       hue rename 1 light-name     # set light 1's name to the given string
