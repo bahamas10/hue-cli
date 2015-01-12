@@ -56,6 +56,7 @@ function usage() {
     '  hue lights 1 -10            # decrease the brightness by 10',
     '  hue lights 1 =100           # set the brightness to 100',
     '  hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5',
+    '  hue lights 4,5 alert        # blink lights 4 and 5 for 30 seconds',
     '  hue lights 4,5 clear        # clear any effects on lights 4 and 5',
     '  hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin',
     '  hue rename 1 light-name     # set light 1\'s name to the given string',
@@ -149,6 +150,7 @@ switch (args[0]) {
         case 'on': l = keys; args[2] = 'on'; break;
         case 'off': l = keys; args[2] = 'off'; break;
         case 'colorloop': l = keys; args[2] = 'colorloop'; break;
+        case 'alert': l = keys; args[2] = 'alert'; break;
         case 'clear': l = keys; args[2] = 'clear'; break;
         case 'reset': l = keys; args[2] = 'reset'; break;
         case 'state': l = keys; args[2] = 'state'; break;
@@ -176,6 +178,7 @@ switch (args[0]) {
         case 'off': l.forEach(function(id) { client.off(id, callback(id)); }); break;
         case 'on': l.forEach(function(id) { client.on(id, callback(id)); }); break;
         case 'colorloop': l.forEach(function(id) { client.state(id, {effect: 'colorloop'}, callback(id)); }); break;
+        case 'alert': l.forEach(function(id) { client.state(id, {alert: 'lselect'}, callback(id)); }); break;
         case 'clear': l.forEach(function(id) { client.state(id, {effect: 'none'}, callback(id)); }); break;
         case 'reset': l.forEach(function(id) { client.state(id, {on: true, bri: 250, sat: 120, hue: 14000, effect: 'none'}, callback(id)); }); break;
         case 'state': // read state from stdin
