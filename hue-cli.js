@@ -150,7 +150,7 @@ switch (args[0]) {
         case 'on': l = keys; args[2] = 'on'; break;
         case 'off': l = keys; args[2] = 'off'; break;
         case 'colorloop': l = keys; args[2] = 'colorloop'; break;
-        case 'alert': l = keys; args[2] = 'blink'; break;
+        case 'alert': l = keys; args[2] = 'alert'; break;
         case 'clear': l = keys; args[2] = 'clear'; break;
         case 'reset': l = keys; args[2] = 'reset'; break;
         case 'state': l = keys; args[2] = 'state'; break;
