@@ -1,6 +1,6 @@
 {
   "name": "hue-cli",
-  "description": "A command line interface to phillips hue",
+  "description": "A command line interface to philips hue",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
   "version": "0.1.0",
   "repository": {
@@ -28,7 +28,7 @@
   },
   "keywords": [
     "hue",
-    "phillips",
+    "philips",
     "automation"
   ]
 }

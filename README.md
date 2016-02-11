@@ -1,7 +1,7 @@
 hue(1)
 ======
 
-A command line interface to [phillips hue](http://meethue.com)
+A command line interface to [philips hue](http://meethue.com)
 
 Installation
 ------------
@@ -17,7 +17,7 @@ Usage
 
     Usage: hue [-H host] [--json] [command]
 
-    control phillips hue over the command line
+    control philips hue over the command line
 
     examples
       hue config                  # view the hue config
@@ -287,7 +287,7 @@ when changing the colors of a light
 Credits
 -------
 
-* [Phillips hue](http://meethue.com): I assume you know what this is by now
+* [Philips hue](http://meethue.com): I assume you know what this is by now
 * [hue.js](https://github.com/thatguydan/hue.js): Node.js hue client
 * [css-color-names](https://github.com/bahamas10/css-color-names): color aliases provided by this module
 
