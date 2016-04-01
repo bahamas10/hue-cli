@@ -42,7 +42,7 @@ function usage() {
   return [
     'Usage: hue [-H host] [--json] [command]',
     '',
-    'control phillips hue over the command line',
+    'control philips hue over the command line',
     '',
     'examples',
     '  hue config                  # view the hue config',
