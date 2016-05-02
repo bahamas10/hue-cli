@@ -17,7 +17,7 @@
     "color-convert": "^0.6.0",
     "css-color-names": "0.0.0",
     "deepmerge": "^0.2.10",
-    "hue-sdk": "0.0.1",
+    "hue-sdk": "0.0.2",
     "latest": "~0.1.1",
     "mired": "0.0.0",
     "tabula": "^1.7.0",
