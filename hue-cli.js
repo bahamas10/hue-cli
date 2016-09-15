@@ -245,12 +245,20 @@ switch (args[0]) {
   case 'register': // register this app
     client = getclient();
     console.log('please go and press the link button on your base station');
-    client.register(function(err) {
+    client.register(function(err, resp) {
       if (err) {
         console.error('failed to pair to Hue Base Station %s', config.host);
         throw err;
       }
+      
       console.log('Hue Base Station paired!')
+      console.log('username: ' + resp[0].success.username);
+      config.username = resp[0].success.username;
+      
+      // writing config file
+      var s = JSON.stringify(config, null, 2);
+      fs.writeFileSync(configfile, s + '\n');
+      console.log('config file written to `%s`', configfile);
     });
     break;
   case 'search': // search for base stations
@@ -290,7 +298,8 @@ function getclient() {
   // create the client
   var client = Hue.createClient({
     stationIp: config.host,
-    appName: app
+    appName: app,
+    username: config.username
   });
   return client;
 }
