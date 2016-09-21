@@ -47,9 +47,7 @@ Usage
     options
       -h, --help     print this message and exit
       -H, --host     the hostname or ip of the bridge to control
-      -i, --init     initialize the config file at ~/.hue.json
       -j, --json     force output to be in json
-      -s, --save     save the config file at ~/.hue.json, same as --init
       -u, --updates  check for available updates
       -v, --version  print the version number and exit
 
@@ -110,19 +108,6 @@ Again, `-j` if you'd like json output.
 
 Running with the command `lights` will give us a list of all the lights
 connected to the base station.
-
-Before we continue, let's create a configuration file.  In the file we can
-set the default host to connect to, so we don't have to keep supplying the
-`-H` argument.  Run:
-
-    $ hue --host 10.0.1.218 --save
-    config file written to `~/.hue.json`
-    {
-      "host": "10.0.1.218"
-    }
-
-Now we'll no longer have to supply the `-H` argument
-with every command.
 
 From here, we can get information about a single light like:
 
@@ -268,7 +253,7 @@ The `state` keyword tells `hue` to read from stdin
 Config
 ------
 
-An optional config file can be created at `~/.hue.json` that looks like...
+A config file will be created at `~/.hue.json` upon registration that looks like...
 
 ``` json
 {
