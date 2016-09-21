@@ -236,7 +236,9 @@ switch (args[0]) {
     // Check for existing config
     var existingconfig = statPath(configfile);
     if (existingconfig && existingconfig.isFile()) {  
-        throw new Error('config file already exists at ' + configfile + ' please remove it before attempting to register a new hub');
+        console.log('A config file already exists at %s', configfile);
+        console.log('please remove it before attempting to register a new hub')
+        process.exit(1);
     }
     // Attempt to pair with hue hub
     client = getclient();
