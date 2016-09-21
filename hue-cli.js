@@ -72,9 +72,7 @@ function usage() {
     'options',
     '  -h, --help     print this message and exit',
     '  -H, --host     the hostname or ip of the bridge to control',
-    '  -i, --init     initialize the config file at ' + configfile,
     '  -j, --json     force output to be in json',
-    '  -s, --save     save the config file at ' + configfile + ', same as --init',
     '  -u, --updates  check for available updates',
     '  -v, --version  print the version number and exit'
   ].join('\n');
@@ -84,9 +82,7 @@ function usage() {
 var options = [
   'h(help)',
   'H:(host)',
-  'i(init)',
   'j(json)',
-  's(save)',
   'u(updates)',
   'v(version)'
 ].join('');
@@ -98,12 +94,6 @@ while ((option = parser.getopt()) !== undefined) {
   switch (option.option) {
     case 'h': console.log(usage()); process.exit(0);
     case 'H': config.host = option.optarg; break;
-    case 'i': case 's':
-      var s = JSON.stringify(config, null, 2);
-      fs.writeFileSync(configfile, s + '\n');
-      console.log('config file written to `%s`', configfile);
-      console.log(s);
-      process.exit(0);
     case 'j': json = true; break;
     case 'u': // check for updates
       require('latest').checkupdate(package, function(ret, msg) {
@@ -296,7 +286,7 @@ function getclient() {
       'error: host not set',
       '',
       'search for hosts with `hue search`',
-      'then run with `-H <host>` or create a config file with `--init`',
+      'then run with `-H <host>`',
     ].join('\n'));
     process.exit(1);
   }
