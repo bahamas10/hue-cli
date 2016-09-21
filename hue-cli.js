@@ -243,6 +243,12 @@ switch (args[0]) {
     });
     break;
   case 'register': // register this app
+    // Check for existing config
+    var existingconfig = statPath(configfile);
+    if (existingconfig && existingconfig.isFile()) {  
+        throw new Error('config file already exists at ' + configfile + ' please remove it before attempting to register a new hub');
+    }
+    // Attempt to pair with hue hub
     client = getclient();
     console.log('please go and press the link button on your base station');
     client.register(function(err, resp) {
@@ -338,4 +344,11 @@ function hex2rgb(hex) {
   function todec(h, i) {
     return parseInt(h + '' + i, 16)
   }
+}
+
+function statPath(path) {
+  try {
+    return fs.statSync(path);
+  } catch (ex) {}
+  return false;
 }
