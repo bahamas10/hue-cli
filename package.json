@@ -2,7 +2,7 @@
   "name": "hue-cli",
   "description": "A command line interface to philips hue",
   "author": "Dave Eddy <dave@daveeddy.com> (http://www.daveeddy.com)",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "repository": {
     "url": "https://github.com/bahamas10/hue-cli",
     "type": "git"
