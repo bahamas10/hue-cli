@@ -22,18 +22,6 @@ var app = 'node-hue-cli';
 var homedir = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
 var configfile = path.join(homedir, '.hue.json');
 var config;
-try {
-  config = JSON.parse(fs.readFileSync(configfile, 'utf-8'));
-} catch (e) {
-  config = {host: null};
-}
-
-// load in config colors if present
-if (config.colors) {
-  Object.keys(config.colors).forEach(function(name) {
-    csscolors[name] = config.colors[name];
-  });
-}
 
 /**
  * return the usage statement
@@ -70,6 +58,7 @@ function usage() {
     '  config, lights, help, register, search',
     '',
     'options',
+    '  -c, --config   location of the configuration file (defaults to ~/.hue.json)',
     '  -h, --help     print this message and exit',
     '  -H, --host     the hostname or ip of the bridge to control',
     '  -j, --json     force output to be in json',
@@ -80,6 +69,7 @@ function usage() {
 
 // command line arguments
 var options = [
+  'c:(config)',
   'h(help)',
   'H:(host)',
   'j(json)',
@@ -92,6 +82,14 @@ var option;
 var json = false;
 while ((option = parser.getopt()) !== undefined) {
   switch (option.option) {
+    case 'c':
+      if (statPath(option.optarg)) {
+        configfile = option.optarg;
+      } else {
+        console.log('Specified config file could not be found.')
+        process.exit(1)
+      }
+      break;
     case 'h': console.log(usage()); process.exit(0);
     case 'H': config.host = option.optarg; break;
     case 'j': json = true; break;
@@ -106,6 +104,19 @@ while ((option = parser.getopt()) !== undefined) {
   }
 }
 var args = process.argv.slice(parser.optind());
+
+try {
+  config = JSON.parse(fs.readFileSync(configfile, 'utf-8'));
+} catch (e) {
+  config = {host: null};
+}
+
+// load in config colors if present
+if (config.colors) {
+  Object.keys(config.colors).forEach(function(name) {
+    csscolors[name] = config.colors[name];
+  });
+}
 
 // command switch
 var client, lights;
