@@ -86,8 +86,8 @@ while ((option = parser.getopt()) !== undefined) {
       if (statPath(option.optarg)) {
         configfile = option.optarg;
       } else {
-        console.log('Specified config file could not be found.')
-        process.exit(1)
+        console.log('Specified config file could not be found.');
+        process.exit(1);
       }
       break;
     case 'h': console.log(usage()); process.exit(0);
