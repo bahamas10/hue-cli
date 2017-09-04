@@ -3,6 +3,9 @@ hue(1)
 
 A command line interface to [philips hue](http://meethue.com)
 
+**NOTE:** A more complete and updated implementation of a Hue Management CLI
+can be found here https://github.com/bahamas10/hueadm
+
 Installation
 ------------
 
