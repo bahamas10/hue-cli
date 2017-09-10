@@ -169,7 +169,7 @@ switch (args[0]) {
         case 'on': l.forEach(function(id) { client.on(id, callback(id)); }); break;
         case 'colorloop': l.forEach(function(id) { client.state(id, {effect: 'colorloop'}, callback(id)); }); break;
         case 'alert': l.forEach(function(id) { client.state(id, {alert: 'lselect'}, callback(id)); }); break;
-        case 'clear': l.forEach(function(id) { client.state(id, {effect: 'none'}, callback(id)); }); break;
+        case 'clear': l.forEach(function(id) { client.state(id, {effect: 'none', alert: 'none'}, callback(id)); }); break;
         case 'reset': l.forEach(function(id) { client.state(id, {on: true, bri: 250, sat: 120, hue: 14000, effect: 'none'}, callback(id)); }); break;
         case 'state': // read state from stdin
           var data = JSON.parse(fs.readFileSync('/dev/stdin', 'utf-8'));
@@ -248,11 +248,11 @@ switch (args[0]) {
         console.error('failed to pair to Hue Base Station %s', config.host);
         throw err;
       }
-      
+
       console.log('Hue Base Station paired!')
       console.log('username: ' + resp[0].success.username);
       config.username = resp[0].success.username;
-      
+
       // writing config file
       var s = JSON.stringify(config, null, 2);
       fs.writeFileSync(configfile, s + '\n');
