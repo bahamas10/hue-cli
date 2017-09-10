@@ -170,7 +170,7 @@ switch (args[0]) {
         case 'colorloop': l.forEach(function(id) { client.state(id, {effect: 'colorloop'}, callback(id)); }); break;
         case 'alert': l.forEach(function(id) { client.state(id, {alert: 'lselect'}, callback(id)); }); break;
         case 'clear': l.forEach(function(id) { client.state(id, {effect: 'none', alert: 'none'}, callback(id)); }); break;
-        case 'reset': l.forEach(function(id) { client.state(id, {on: true, bri: 250, sat: 120, hue: 14000, effect: 'none'}, callback(id)); }); break;
+        case 'reset': l.forEach(function(id) { client.state(id, {on: true, bri: 254, effect: 'none', alert: 'none', ct: 370}, callback(id)); }); break;
         case 'state': // read state from stdin
           var data = JSON.parse(fs.readFileSync('/dev/stdin', 'utf-8'));
           l.forEach(function(id) {
