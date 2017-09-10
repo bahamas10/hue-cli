@@ -34,7 +34,7 @@ Usage
       hue lights 1 -10            # decrease the brightness by 10 (out of 254)
       hue lights 1 =100           # set the brightness to 100 (out of 254)
       hue lights 1 +10%           # increase the brightness by 10%
-      hue lights 1 -10%           # decrease the brightness by 10
+      hue lights 1 -10%           # decrease the brightness by 10%
       hue lights 1 =100%          # set the brightness to 100%
       hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5
       hue lights 4,5 alert        # blink lights 4 and 5 for 30 seconds
