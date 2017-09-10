@@ -18,7 +18,7 @@ First, install [Node.js](http://nodejs.org), then:
 Usage
 -----
 
-    Usage: hue [-H host] [--json] [command]
+    Usage: hue [-c config] [-H host] [--json] [command]
 
     control philips hue over the command line
 
@@ -34,7 +34,7 @@ Usage
       hue lights 1 -10            # decrease the brightness by 10
       hue lights 1 =100           # set the brightness to 100
       hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5
-      hue lights 4,5 alert        # enable the blink effect on lights 4 and 5
+      hue lights 4,5 alert        # blink lights 4 and 5 for 30 seconds
       hue lights 4,5 clear        # clear any effects on lights 4 and 5
       hue lights 1 state          # set the state on light 1 as passed in as JSON over stdin
       hue rename 1 light-name     # set light 1's name to the given string
@@ -48,11 +48,12 @@ Usage
       config, lights, help, register, search
 
     options
-      -h, --help     print this message and exit
-      -H, --host     the hostname or ip of the bridge to control
-      -j, --json     force output to be in json
-      -u, --updates  check for available updates
-      -v, --version  print the version number and exit
+      -c, --config <file>    config file, defaults to ~/.hue.json
+      -h, --help             print this message and exit
+      -H, --host             the hostname or ip of the bridge to control
+      -j, --json             force output to be in json
+      -u, --updates          check for available updates
+      -v, --version          print the version number and exit
 
 Example
 -------

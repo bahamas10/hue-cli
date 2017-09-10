@@ -11,6 +11,7 @@ var path = require('path');
 var util = require('util');
 
 var csscolors = require('css-color-names');
+var deepmerge = require('deepmerge');
 var getopt = require('posix-getopt');
 var Hue = require('hue.js');
 var sprintf = require('extsprintf').sprintf;
@@ -18,29 +19,16 @@ function printf() { console.log(sprintf.apply(this, arguments)); }
 
 var package = require('./package.json');
 
-var app = 'node-hue-cli';
 var homedir = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-var configfile = path.join(homedir, '.hue.json');
-var config;
-try {
-  config = JSON.parse(fs.readFileSync(configfile, 'utf-8'));
-} catch (e) {
-  config = {host: null};
-}
-
-// load in config colors if present
-if (config.colors) {
-  Object.keys(config.colors).forEach(function(name) {
-    csscolors[name] = config.colors[name];
-  });
-}
+var defaultconfigfile = path.join(homedir, '.hue.json');
+var app = 'node-hue-cli';
 
 /**
  * return the usage statement
  */
 function usage() {
   return [
-    'Usage: hue [-H host] [--json] [command]',
+    'Usage: hue [-c config] [-H host] [--json] [command]',
     '',
     'control philips hue over the command line',
     '',
@@ -70,16 +58,18 @@ function usage() {
     '  config, lights, help, register, search',
     '',
     'options',
-    '  -h, --help     print this message and exit',
-    '  -H, --host     the hostname or ip of the bridge to control',
-    '  -j, --json     force output to be in json',
-    '  -u, --updates  check for available updates',
-    '  -v, --version  print the version number and exit'
+    '  -c, --config <file>    config file, defaults to ~/.hue.json',
+    '  -h, --help             print this message and exit',
+    '  -H, --host             the hostname or ip of the bridge to control',
+    '  -j, --json             force output to be in json',
+    '  -u, --updates          check for available updates',
+    '  -v, --version          print the version number and exit'
   ].join('\n');
 }
 
 // command line arguments
 var options = [
+  'c:(config)',
   'h(help)',
   'H:(host)',
   'j(json)',
@@ -89,9 +79,12 @@ var options = [
 var parser = new getopt.BasicParser(options, process.argv);
 
 var option;
+var config = {};
+var configfile;
 var json = false;
 while ((option = parser.getopt()) !== undefined) {
   switch (option.option) {
+    case 'c': configfile = option.optarg; break;
     case 'h': console.log(usage()); process.exit(0);
     case 'H': config.host = option.optarg; break;
     case 'j': json = true; break;
@@ -106,6 +99,24 @@ while ((option = parser.getopt()) !== undefined) {
   }
 }
 var args = process.argv.slice(parser.optind());
+
+try {
+  var file = configfile || defaultconfigfile;
+  var readConfig = JSON.parse(fs.readFileSync(file, 'utf-8'));
+} catch (e) {
+  if (configfile) {
+    console.error('failed to read config %s: %s', configfile, e.message);
+    process.exit(1);
+  }
+}
+config = deepmerge(readConfig, config);
+
+// load in config colors if present
+if (config.colors) {
+  Object.keys(config.colors).forEach(function(name) {
+    csscolors[name] = config.colors[name];
+  });
+}
 
 // command switch
 var client, lights;

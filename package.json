@@ -15,11 +15,12 @@
     "hue": "./hue-cli.js"
   },
   "dependencies": {
-    "posix-getopt": "~1.0.0",
+    "css-color-names": "0.0.0",
+    "deepmerge": "^1.5.1",
+    "extsprintf": "~1.0.2",
     "hue.js": "https://github.com/bahamas10/hue.js/tarball/master",
     "latest": "~0.1.1",
-    "css-color-names": "0.0.0",
-    "extsprintf": "~1.0.2"
+    "posix-getopt": "~1.0.0"
   },
   "devDependencies": {},
   "optionalDependencies": {},
