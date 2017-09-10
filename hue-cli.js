@@ -40,9 +40,12 @@ function usage() {
     '  hue lights on               # turn all lights on',
     '  hue lights 1 ff0000         # turn light 1 red',
     '  hue lights 1 red            # same as above',
-    '  hue lights 1 +10            # increase the brightness by 10',
-    '  hue lights 1 -10            # decrease the brightness by 10',
-    '  hue lights 1 =100           # set the brightness to 100',
+    '  hue lights 1 +10            # increase the brightness by 10 (out of 254)',
+    '  hue lights 1 -10            # decrease the brightness by 10 (out of 254)',
+    '  hue lights 1 =100           # set the brightness to 100 (out of 254)',
+    '  hue lights 1 +10%           # increase the brightness by 10%',
+    '  hue lights 1 -10%           # decrease the brightness by 10',
+    '  hue lights 1 =100%          # set the brightness to 100%',
     '  hue lights 4,5 colorloop    # enable the colorloop effect on lights 4 and 5',
     '  hue lights 4,5 alert        # blink lights 4 and 5 for 30 seconds',
     '  hue lights 4,5 clear        # clear any effects on lights 4 and 5',
@@ -190,9 +193,12 @@ switch (args[0]) {
           break;
         default: // hex, colors, or brightness
           var s = args[2];
+          var match;
 
-          if (s[0] === '-' || s[0] === '+' || s[0] === '=') {
-            var num = +s.slice(1);
+          if ((match = s.match(/^([-+=])([0-9]+)(%?)$/))) {
+            var op = match[1];
+            var num = match[2];
+            var perc = match[3];
             l.forEach(function(id) {
               client.light(id, function(err, data) {
                 if (err) {
@@ -202,18 +208,27 @@ switch (args[0]) {
                 }
                 var bri = data.state.bri;
                 var oldbri = bri;
-                switch (s[0]) {
+                switch (op) {
                   case '=':
-                    bri = num;
+                    if (perc)
+                      bri = Math.round(num * (254/100));
+                    else
+                      bri = num;
                     break;
                   case '+':
-                    bri += num;
+                    if (perc)
+                      bri += Math.round(num * (254/100));
+                    else
+                      bri += num;
                     break;
                   case '-':
-                    bri -= num;
+                    if (perc)
+                      bri -= Math.round(num * (254/100));
+                    else
+                      bri -= num;
                     break;
                 }
-                bri = Math.min(255, Math.max(0, bri));
+                bri = Math.min(254, Math.max(1, bri));
                 client.state(id, {bri: bri}, function(err, data) {
                   if (json) return console.log(JSON.stringify(err || data, null, 2));
                   if (err) return printf('%4d %-5s %s (type %d)', id, 'error', err.description, err.type);
