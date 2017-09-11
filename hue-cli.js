@@ -112,6 +112,7 @@ try {
     process.exit(1);
   }
 }
+configfile = file;
 config = deepmerge(readConfig, config);
 
 // load in config colors if present
