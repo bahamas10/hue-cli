@@ -56,6 +56,8 @@ function usage() {
     '  hue help                    # this message',
     '  hue register                # register this app to hue',
     '  hue search                  # search for hue base stations',
+    '  hue alias                   # shows all the defined aliases',
+    '  hue alias bedroom 8,9,10    # creates an alias allowing `hue lights bedroom on` and so on',
     '',
     'commands',
     '  config, lights, help, register, search',
@@ -159,6 +161,11 @@ switch (args[0]) {
         case 'clear': l = keys; args[2] = 'clear'; break;
         case 'reset': l = keys; args[2] = 'reset'; break;
         case 'state': l = keys; args[2] = 'state'; break;
+        default:
+          if (config.alias && config.alias[l]) {
+            l = config.alias[l].split(',');
+          }
+          break;
       }
       // if there is no action specified, return info for all lights
       if (!args[2]) {
@@ -285,6 +292,21 @@ switch (args[0]) {
       fs.writeFileSync(configfile, s + '\n');
       console.log('config file written to `%s`', configfile);
     });
+    break;
+  case 'alias':
+    config.alias = config.alias || {};
+    if (args.length === 1) {
+      console.log(JSON.stringify(config.alias, null, 2));
+    } else if (args.length == 3) {
+      config.alias[args[1]] = args[2];
+      // writing config file
+      var s = JSON.stringify(config, null, 2);
+      fs.writeFileSync(configfile, s + '\n');
+      console.log('config in `%s` updated', configfile);
+    } else {
+      console.error('wrong usage of alias, run `hue help`');
+      process.exit(1);
+    }
     break;
   case 'search': // search for base stations
     Hue.discover(function(stations) {
