@@ -176,11 +176,7 @@ This is shorthand for
 
     $ hue lights all off
 
-Where `all` is a recognized keyword for all lights in the system.  You can also:
-
-    $ hue lights off
-
-To quickly turn off all lights on the system
+Where `all` is a recognized keyword for all lights in the system.
 
 ### controlling colors
 
